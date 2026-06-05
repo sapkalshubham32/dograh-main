@@ -77,18 +77,17 @@ services:
       TURN_SECRET: "${TURN_SECRET:-}"
       FASTAPI_WORKERS: "${FASTAPI_WORKERS:-1}"
     volumes:
-      - ./scripts:/workspace/scripts:ro
-      - ./deploy:/workspace/deploy:ro
+      - ./scripts:/scripts:ro
+      - ./deploy:/deploy:ro
       - ./certs:/certs:ro
       - nginx-generated:/generated/nginx
       - coturn-generated:/generated/coturn
     command:
-      - /workspace/scripts/run_dograh_init.sh
+      - /scripts/run_dograh_init.sh
 
   nginx:
     image: nginx:alpine
     container_name: nginx_https
-    profiles: ["remote"]
     depends_on:
       dograh-init:
         condition: service_completed_successfully
@@ -107,7 +106,6 @@ services:
     image: coturn/coturn:4.8.0
     container_name: coturn
     restart: unless-stopped
-    profiles: ["remote", "local-turn"]
     depends_on:
       dograh-init:
         condition: service_completed_successfully
