@@ -66,7 +66,6 @@ services:
   dograh-init:
     image: bash:5.2
     container_name: dograh_init
-    profiles: ["remote", "local-turn"]
     environment:
       ENVIRONMENT: "${ENVIRONMENT:-local}"
       SERVER_IP: "${SERVER_IP:-}"
